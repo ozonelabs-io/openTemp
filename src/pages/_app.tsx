@@ -34,16 +34,19 @@ export default function App({ Component, pageProps }: AppProps) {
   });
 
   return (
-    <WalletContextProvider>
-      <WagmiProvider config={config}>
-        <SolanaTimeContextProvider>
-          <QueryClientProvider client={queryClient}>
-            <RainbowKitProvider>
-              <Component {...pageProps} />
-            </RainbowKitProvider>
-          </QueryClientProvider>
-        </SolanaTimeContextProvider>
-      </WagmiProvider >
-    </WalletContextProvider>
+    <DataProvider>
+
+      <WalletContextProvider>
+        <WagmiProvider config={config}>
+          <SolanaTimeContextProvider>
+            <QueryClientProvider client={queryClient}>
+              <RainbowKitProvider>
+                <Component {...pageProps} />
+              </RainbowKitProvider>
+            </QueryClientProvider>
+          </SolanaTimeContextProvider>
+        </WagmiProvider >
+      </WalletContextProvider>
+    </DataProvider>
   );
 }

@@ -58,13 +58,11 @@ const WalletContextProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   return (
-    <DataProvider>
-      <WalletProvider wallets={wallets} autoConnect>
-        <UmiProvider endpoint={endpoint}>
-          <WalletModalProvider>{children}</WalletModalProvider>
-        </UmiProvider>
-      </WalletProvider>
-    </DataProvider>
+    <WalletProvider wallets={wallets} autoConnect>
+      <UmiProvider endpoint={endpoint}>
+        <WalletModalProvider>{children}</WalletModalProvider>
+      </UmiProvider>
+    </WalletProvider>
   );
 };
 
