@@ -28,10 +28,10 @@ if (
 }
 
 let RPC_URL =
-  "https://mainnet.helius-rpc.com/?api-key=7db9bd10-667a-43f7-811d-2d5cc3f86344";
+  "https://mainnet.helius-rpc.com/?api-key=c7cb47d4-2d54-4651-889c-f57e47450023";
 
 let CONNRPC =
-  "https://solana-Devnet.g.alchemy.com/v2/aosSEDNOSBO0fsNcTISNYfj9irU59Gzz";
+  "https://mainnet.helius-rpc.com/?api-key=c7cb47d4-2d54-4651-889c-f57e47450023";
 
 if (process.env.NEXT_PUBLIC_RPC) {
   RPC_URL = process.env.NEXT_PUBLIC_RPC;

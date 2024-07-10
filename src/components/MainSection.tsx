@@ -94,7 +94,7 @@ const MainSection = () => {
         address: BNBAddress,
         functionName: "buyFromNative",
         args: [],
-        value: weiValue,
+        value: BigInt(weiValue),
       });
       getInfo();
     } catch (error) {
@@ -462,7 +462,7 @@ const MainSection = () => {
                   {tab === 1 ? (
                     <>
                       <label
-                        for="pay-input"
+                        htmlFor="pay-input"
                         className="block pb-2 text-xs font-bold tracking-wider"
                         data-ninja-font="ubuntu_medium_normal"
                       >
@@ -480,7 +480,7 @@ const MainSection = () => {
                   ) : (
                     <>
                       <label
-                        for="pay-input"
+                        htmlFor="pay-input"
                         className="block pb-2 text-xs font-bold tracking-wider"
                         data-ninja-font="ubuntu_medium_normal"
                       >
