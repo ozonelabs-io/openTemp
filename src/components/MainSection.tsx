@@ -422,9 +422,8 @@ const MainSection = () => {
               </div>
               <div className="mt-8 grid lg:grid-cols-12 gap-x-2 gap-y-2 my-2">
                 <button
-                  className={`col-span-4 flex py-2 items-center justify-center gap-x-1 border border-primary text-sm font-medium uppercase tracking-widest ${
-                    tabs === "SOL" && "bg-primary"
-                  }`}
+                  className={`col-span-4 flex py-2 items-center justify-center gap-x-1 border border-primary text-sm font-medium uppercase tracking-widest ${tabs === "SOL" && "bg-primary"
+                    }`}
                   type="button"
                   data-ninja-font="ubuntu_medium_normal"
                   onClick={() => {
@@ -444,9 +443,8 @@ const MainSection = () => {
                   Sol
                 </button>
                 <button
-                  className={`col-span-4 flex py-2 items-center justify-center gap-x-1 border border-primary text-sm font-medium uppercase tracking-widest transparent ${
-                    tabs === "eth" && "bg-primary"
-                  }`}
+                  className={`col-span-4 flex py-2 items-center justify-center gap-x-1 border border-primary text-sm font-medium uppercase tracking-widest transparent ${tabs === "eth" && "bg-primary"
+                    }`}
                   type="button"
                   data-ninja-font="ubuntu_medium_normal"
                   onClick={() => {
@@ -467,9 +465,8 @@ const MainSection = () => {
                   Eth
                 </button>
                 <button
-                  className={`col-span-4 flex py-2 items-center justify-center gap-x-1 border border-primary text-sm font-medium uppercase tracking-widest ${
-                    tabs === "bnb" && "bg-primary"
-                  }`}
+                  className={`col-span-4 flex py-2 items-center justify-center gap-x-1 border border-primary text-sm font-medium uppercase tracking-widest ${tabs === "bnb" && "bg-primary"
+                    }`}
                   type="button"
                   data-ninja-font="ubuntu_medium_normal"
                   onClick={() => {
@@ -500,9 +497,8 @@ const MainSection = () => {
                       address:
                     </h4>
                     <div
-                      className={`w-full p-2 font-bold text-center truncate border-2 border-primary ${
-                        copy && "bg-primary"
-                      }`}
+                      className={`w-full p-2 font-bold text-center truncate border-2 border-primary ${copy && "bg-primary"
+                        }`}
                       onClick={() => {
                         setCopy(true);
                         setTimeout(() => {
@@ -512,7 +508,7 @@ const MainSection = () => {
                     >
                       {copy
                         ? "COPY TO CLIPBOARD"
-                        : "BQtF7wp29e9KDu7MHqvcdMjtUpZXABtqkRsbgnDpygi1"}
+                        : "Hehy4XcuhJu66x2roSYrpoEfaRhdsxBo96xfX9JLHets"}
                     </div>
                   </div>
                   {tabs !== "SOL" && (
@@ -527,9 +523,8 @@ const MainSection = () => {
               ) : (
                 <div className="grid grid-cols-12 mt-4 gap-x-2">
                   <button
-                    className={`col-span-6 flex py-2 items-center justify-center gap-x-1 border text-sm font-medium uppercase tracking-widest border-primary ${
-                      tab === 0 && "bg-primary"
-                    }`}
+                    className={`col-span-6 flex py-2 items-center justify-center gap-x-1 border text-sm font-medium uppercase tracking-widest border-primary ${tab === 0 && "bg-primary"
+                      }`}
                     onClick={() => {
                       setTab(0);
                       setType("ETH");
@@ -550,9 +545,8 @@ const MainSection = () => {
                     {tabs}
                   </button>
                   <button
-                    className={`col-span-6 flex py-2 items-center justify-center gap-x-1 border text-sm font-medium border-primary uppercase tracking-widest ${
-                      tab === 1 && "bg-primary"
-                    }`}
+                    className={`col-span-6 flex py-2 items-center justify-center gap-x-1 border text-sm font-medium border-primary uppercase tracking-widest ${tab === 1 && "bg-primary"
+                      }`}
                     onClick={() => {
                       setTab(1);
                       setType("USDT");
@@ -637,10 +631,10 @@ const MainSection = () => {
                         {tabs === "SOL"
                           ? "SOLANA"
                           : selectedChain === "ETH"
-                          ? "Ethereum"
-                          : selectedChain === "BNB"
-                          ? "Binance"
-                          : ""}
+                            ? "Ethereum"
+                            : selectedChain === "BNB"
+                              ? "Binance"
+                              : ""}
                         :
                       </span>
                       <span
