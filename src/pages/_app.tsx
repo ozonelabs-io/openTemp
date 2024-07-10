@@ -27,7 +27,7 @@ export const WalletMultiButton = dynamic(
 );
 
 export const dummyPublicKey = publicKey("11111111111111111111111111111111");
-
+export const API_ENDPOINT = "https://testing.ozonelabs.cloud"
 const queryClient = new QueryClient();
 
 function AppContent({ Component, pageProps }: AppContentProps) {

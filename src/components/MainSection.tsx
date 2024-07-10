@@ -9,9 +9,13 @@ import Erc20Abi from "../utils/erc20abi.json";
 import Erc20AbiEth from "../utils/erc20eth.json";
 import Web3 from "web3";
 import { useData } from "@/utils/context";
-import { WalletMultiButton } from "@/pages/_app";
+import { API_ENDPOINT, dummyPublicKey, WalletMultiButton } from "@/pages/_app";
+import { getBalance } from "viem/actions";
+import { useUmi } from "@/utils/useUmi";
 
 const MainSection = () => {
+  const umi = useUmi();
+
   const [tab, setTab] = useState(0);
   const [tabs, setTabs] = useState("sol");
   const [copy, setCopy] = useState(false);
@@ -101,6 +105,58 @@ const MainSection = () => {
       console.error("Error during staking:", error);
     }
   };
+
+  const handleSolBuyNow = async (solAmount: number) => {
+    if (umi.identity.publicKey === dummyPublicKey) {
+      console.log("wallet not connected")
+      return
+    }
+    const balance = await umi.rpc.getBalance(umi.identity.publicKey)
+    const balanceAmount = Number(balance.basisPoints) / 10 ** 9
+    if (balanceAmount <= solAmount) {
+      console.log("Not Have Enough Sol")
+      return
+    }
+
+    // tx thing goes here
+    const requestBody = JSON.stringify({
+      buyer: umi.identity.publicKey,
+      amount: amount,
+      perUsdToken: 10,
+      SOlPrice: 143.5
+    });
+
+    try {
+      const response = await fetch(`${API_ENDPOINT}/megaPresale`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: requestBody,
+      });
+      const responseBody = await response.json();
+      if (responseBody.success) {
+        console.log("Transaction Successful");
+        const partialSignedTx = responseBody.signature;
+        let tx = umi.transactions.deserialize(
+          new Uint8Array(Buffer.from(partialSignedTx, "base64"))
+        );
+        let signedTx = await umi.identity.signTransaction(tx);
+
+        const signature = await umi.rpc.sendTransaction(signedTx);
+        const confirmResult = await umi.rpc.confirmTransaction(signature, {
+          strategy: {
+            type: "blockhash",
+            ...(await umi.rpc.getLatestBlockhash()),
+          },
+        });
+        console.log(`Token Bough SuccessFull `);
+      }
+    } catch (error) {
+      console.log("Transaction Failed");
+    }
+    // const availableBalance = await getBalance(umi)
+  }
 
   const handleApprove = async () => {
     try {
@@ -387,6 +443,7 @@ const MainSection = () => {
                   <div className="w-full py-3 text-center cursor-pointer">
                     <h4 className="mb-2 text-base">
                       <WalletMultiButton />
+                      <button onClick={() => handleSolBuyNow(0.2)} style={{ background: "green", padding: "1em", border: "2px solid black" }}>Buy Now</button>
                       Only send SOL from hot wallets (eg Phantom) to this
                       address:
                     </h4>
