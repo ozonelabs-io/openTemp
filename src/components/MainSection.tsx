@@ -422,8 +422,9 @@ const MainSection = () => {
               </div>
               <div className="mt-8 grid lg:grid-cols-12 gap-x-2 gap-y-2 my-2">
                 <button
-                  className={`col-span-4 flex py-2 items-center justify-center gap-x-1 border border-primary text-sm font-medium uppercase tracking-widest ${tabs === "SOL" && "bg-primary"
-                    }`}
+                  className={`col-span-4 flex py-2 items-center justify-center gap-x-1 border border-primary text-sm font-medium uppercase tracking-widest ${
+                    tabs === "SOL" && "bg-primary"
+                  }`}
                   type="button"
                   data-ninja-font="ubuntu_medium_normal"
                   onClick={() => {
@@ -443,8 +444,9 @@ const MainSection = () => {
                   Sol
                 </button>
                 <button
-                  className={`col-span-4 flex py-2 items-center justify-center gap-x-1 border border-primary text-sm font-medium uppercase tracking-widest transparent ${tabs === "eth" && "bg-primary"
-                    }`}
+                  className={`col-span-4 flex py-2 items-center justify-center gap-x-1 border border-primary text-sm font-medium uppercase tracking-widest transparent ${
+                    tabs === "eth" && "bg-primary"
+                  }`}
                   type="button"
                   data-ninja-font="ubuntu_medium_normal"
                   onClick={() => {
@@ -465,8 +467,9 @@ const MainSection = () => {
                   Eth
                 </button>
                 <button
-                  className={`col-span-4 flex py-2 items-center justify-center gap-x-1 border border-primary text-sm font-medium uppercase tracking-widest ${tabs === "bnb" && "bg-primary"
-                    }`}
+                  className={`col-span-4 flex py-2 items-center justify-center gap-x-1 border border-primary text-sm font-medium uppercase tracking-widest ${
+                    tabs === "bnb" && "bg-primary"
+                  }`}
                   type="button"
                   data-ninja-font="ubuntu_medium_normal"
                   onClick={() => {
@@ -493,23 +496,13 @@ const MainSection = () => {
                 <>
                   <div className="w-full py-3 text-center cursor-pointer">
                     <h4 className="mb-2 text-base">
-                      <WalletMultiButton />
-                      <button
-                        onClick={() => handleSolBuyNow(0.2)}
-                        style={{
-                          background: "green",
-                          padding: "1em",
-                          border: "2px solid black",
-                        }}
-                      >
-                        Buy Now
-                      </button>
                       Only send SOL from hot wallets (eg Phantom) to this
                       address:
                     </h4>
                     <div
-                      className={`w-full p-2 font-bold text-center truncate border-2 border-primary ${copy && "bg-primary"
-                        }`}
+                      className={`w-full p-2 font-bold text-center truncate border-2 border-primary ${
+                        copy && "bg-primary"
+                      }`}
                       onClick={() => {
                         setCopy(true);
                         setTimeout(() => {
@@ -522,16 +515,21 @@ const MainSection = () => {
                         : "BQtF7wp29e9KDu7MHqvcdMjtUpZXABtqkRsbgnDpygi1"}
                     </div>
                   </div>
-                  <div className="w-full py-1 my-0 text-center border-primary border-bottom">
-                    OR
-                  </div>
+                  {tabs !== "SOL" && (
+                    <div className="w-full py-1 my-0 text-center border-primary border-bottom">
+                      OR
+                    </div>
+                  )}
                 </>
               )}
-              {tabs != "sol" ? (
+              {tabs === "SOL" ? (
+                <></>
+              ) : (
                 <div className="grid grid-cols-12 mt-4 gap-x-2">
                   <button
-                    className={`col-span-6 flex py-2 items-center justify-center gap-x-1 border text-sm font-medium uppercase tracking-widest border-primary ${tab === 0 && "bg-primary"
-                      }`}
+                    className={`col-span-6 flex py-2 items-center justify-center gap-x-1 border text-sm font-medium uppercase tracking-widest border-primary ${
+                      tab === 0 && "bg-primary"
+                    }`}
                     onClick={() => {
                       setTab(0);
                       setType("ETH");
@@ -552,8 +550,9 @@ const MainSection = () => {
                     {tabs}
                   </button>
                   <button
-                    className={`col-span-6 flex py-2 items-center justify-center gap-x-1 border text-sm font-medium border-primary uppercase tracking-widest ${tab === 1 && "bg-primary"
-                      }`}
+                    className={`col-span-6 flex py-2 items-center justify-center gap-x-1 border text-sm font-medium border-primary uppercase tracking-widest ${
+                      tab === 1 && "bg-primary"
+                    }`}
                     onClick={() => {
                       setTab(1);
                       setType("USDT");
@@ -572,8 +571,6 @@ const MainSection = () => {
                     USDT
                   </button>
                 </div>
-              ) : (
-                <></>
               )}
               <div className="grid grid-cols-12 mt-6 gap-x-2 gap-y-0">
                 <div className="col-span-6">
@@ -640,10 +637,10 @@ const MainSection = () => {
                         {tabs === "SOL"
                           ? "SOLANA"
                           : selectedChain === "ETH"
-                            ? "Ethereum"
-                            : selectedChain === "BNB"
-                              ? "Binance"
-                              : ""}
+                          ? "Ethereum"
+                          : selectedChain === "BNB"
+                          ? "Binance"
+                          : ""}
                         :
                       </span>
                       <span
@@ -667,30 +664,44 @@ const MainSection = () => {
                     className="w-full text-center py-4 bg-transparent disabled:cursor-not-allowed border-primary border disabled:opacity-75 mb-2"
                     data-ninja-font="ubuntu_regular_normal"
                   > */}
-                  <ConnectButton />
+                  {tabs === "SOL" ? <WalletMultiButton /> : <ConnectButton />}
+                  {/* </button> */}
                   {/* </button> */}
                 </div>
               </div>
 
-              <button
-                type="submit"
-                className="w-full text-center py-4 bg-primary border-primary border mt-2"
-                onClick={async () => {
-                  if (tab === 1) {
-                    handleApprove();
-                    setTimeout(() => {
-                      setTrigger(!trigger);
-                    }, 12000);
-                  } else {
-                    handleBuy();
-                    setTimeout(() => {
-                      setTrigger(!trigger);
-                    }, 14000);
-                  }
-                }}
-              >
-                Buy Now
-              </button>
+              {tabs === "SOL" ? (
+                <button
+                  onClick={() => handleSolBuyNow(0.2)}
+                  style={{
+                    background: "green",
+                    padding: "1em",
+                    marginTop: "1em",
+                  }}
+                >
+                  Buy Now
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="w-full text-center py-4 bg-primary border-primary border mt-2"
+                  onClick={async () => {
+                    if (tab === 1) {
+                      handleApprove();
+                      setTimeout(() => {
+                        setTrigger(!trigger);
+                      }, 12000);
+                    } else {
+                      handleBuy();
+                      setTimeout(() => {
+                        setTrigger(!trigger);
+                      }, 14000);
+                    }
+                  }}
+                >
+                  Buy Now
+                </button>
+              )}
               <div className="grid grid-cols-12 mt-12">
                 <div className="col-span-12 sm:col-span-6">
                   <a
