@@ -47,11 +47,12 @@ const MainSection = () => {
       const web3 = new Web3(rpc);
       const contract = new web3.eth.Contract(abi, BNBAddress);
       const tokenBalance = await contract.methods.ikeBalance(address).call();
-      if (tokenBalance) {
 
-        const tokenBalanceInEther = parseInt(web3.utils.fromWei(tokenBalance, "ether"));
+      if (tokenBalance && typeof tokenBalance === 'string') {
+        const tokenBalanceInEther = parseFloat(web3.utils.fromWei(tokenBalance, 'ether'));
         setBalance(tokenBalanceInEther);
       }
+
     } catch (error) {
       console.error("Error fetching user information:", error);
     }
@@ -59,6 +60,7 @@ const MainSection = () => {
 
   useEffect(() => {
     getInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address, trigger]);
 
   const getTokenAmount = async (e: any) => {
@@ -72,10 +74,13 @@ const MainSection = () => {
         type === "ETH"
           ? await contract.methods.tokenAmountsNative(weiAmount).call()
           : await contract.methods.tokenAmountsUSDT(weiAmount).call();
-      const tokenInEther = parseFloat(
-        web3.utils.fromWei(tokens, "ether")
-      );
-      setTokenAmount(tokenInEther);
+
+      if (tokens && typeof tokens === 'string') {
+        const tokenInEther = parseFloat(
+          web3.utils.fromWei(tokens, "ether")
+        );
+        setTokenAmount(tokenInEther);
+      }
     } catch (error) {
       console.error("Error fetching token amount:", error);
     }
@@ -113,7 +118,7 @@ const MainSection = () => {
     }
     const balance = await umi.rpc.getBalance(umi.identity.publicKey)
     const balanceAmount = Number(balance.basisPoints) / 10 ** 9
-    if (balanceAmount <= solAmount) {
+    if (balanceAmount <= amount) {
       console.log("Not Have Enough Sol")
       return
     }

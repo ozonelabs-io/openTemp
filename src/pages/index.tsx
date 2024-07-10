@@ -63,7 +63,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Companeons</title>
+        <title>MEGA PRESALE</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <div className="relative min-h-screen text-white bg-[#091620] lg:py-10">
