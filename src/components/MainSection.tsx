@@ -17,7 +17,7 @@ const MainSection = () => {
   const umi = useUmi();
 
   const [tab, setTab] = useState(0);
-  const [tabs, setTabs] = useState("sol");
+  const [tabs, setTabs] = useState("SOL");
   const [copy, setCopy] = useState(false);
   const { data: hash, writeContract } = useWriteContract();
   const [amount, setAmount] = useState<number>(0);
@@ -81,6 +81,9 @@ const MainSection = () => {
         );
         setTokenAmount(tokenInEther);
       }
+      if (tabs.toUpperCase() === "SOL") {
+        setTokenAmount(inputValue * 1440);
+      }
     } catch (error) {
       console.error("Error fetching token amount:", error);
     }
@@ -128,7 +131,7 @@ const MainSection = () => {
       buyer: umi.identity.publicKey,
       amount: amount,
       perUsdToken: 10,
-      SOlPrice: 143.5
+      SOlPrice: 140
     });
 
     try {
@@ -547,7 +550,7 @@ const MainSection = () => {
                         className="block pb-2 text-xs font-bold tracking-wider"
                         data-ninja-font="ubuntu_medium_normal"
                       >
-                        Buy with BNB
+                        Buy with {tabs}
                       </label>
                       <input
                         id="pay-input"
