@@ -125,7 +125,7 @@ const MainSection = () => {
         setTokenAmount(tokenInEther);
       }
       if (tabs.toUpperCase() === "SOL") {
-        setTokenAmount(inputValue * 1440);
+        setTokenAmount(inputValue * 1400);
       }
     } catch (error) {
       console.error("Error fetching token amount:", error);
