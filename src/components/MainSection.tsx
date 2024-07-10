@@ -489,7 +489,7 @@ const MainSection = () => {
                 </button>
               </div>
 
-              {tabs === "sol" && (
+              {tabs === "SOL" && (
                 <>
                   <div className="w-full py-3 text-center cursor-pointer">
                     <h4 className="mb-2 text-base">
