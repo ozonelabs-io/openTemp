@@ -12,6 +12,14 @@ import { useData } from "@/utils/context";
 import { API_ENDPOINT, dummyPublicKey, WalletMultiButton } from "@/pages/_app";
 import { getBalance } from "viem/actions";
 import { useUmi } from "@/utils/useUmi";
+import { PublicKey } from "@solana/web3.js";
+import {
+  createAssociatedTokenAccountInstruction,
+  createTransferInstruction,
+  getAccount,
+  getAssociatedTokenAddress,
+} from "@solana/spl-token";
+import { connection } from "@/utils/walletProvider";
 
 const MainSection = () => {
   const umi = useUmi();
@@ -27,6 +35,10 @@ const MainSection = () => {
   const [approved, setApproved] = useState(false);
   const [trigger, setTrigger] = useState(false);
   const { selectedChain, setSelectedChain } = useData();
+
+  const [purchasedSolToken, setPurchasedSolToken] = useState<number>(0);
+  const [solBalance, setSolBalance] = useState<number>(0);
+
   const rpc =
     selectedChain === "ETH"
       ? "https://eth.llamarpc.com"
@@ -48,15 +60,48 @@ const MainSection = () => {
       const contract = new web3.eth.Contract(abi, BNBAddress);
       const tokenBalance = await contract.methods.ikeBalance(address).call();
 
-      if (tokenBalance && typeof tokenBalance === 'string') {
-        const tokenBalanceInEther = parseFloat(web3.utils.fromWei(tokenBalance, 'ether'));
+      if (tokenBalance && typeof tokenBalance === "string") {
+        const tokenBalanceInEther = parseFloat(
+          web3.utils.fromWei(tokenBalance, "ether")
+        );
         setBalance(tokenBalanceInEther);
       }
-
     } catch (error) {
       console.error("Error fetching user information:", error);
     }
   };
+
+  const getTokenAVilable = async () => {
+    if (umi.identity.publicKey === dummyPublicKey) {
+      console.log("wallet not connected");
+      return;
+    }
+    const balance = await umi.rpc.getBalance(umi.identity.publicKey);
+    const balanceAmount = Number(balance.basisPoints) / 10 ** 9;
+    setSolBalance(balanceAmount);
+
+    const buyerTokenAccount = await getAssociatedTokenAddress(
+      new PublicKey("28SSXrsPyqkq2nij6PHaydJF74U5Y4d2ZQ4mbLBXwReS"),
+      new PublicKey(umi.identity.publicKey)
+    );
+
+    try {
+      const projectTokenAccountInfo = await getAccount(
+        connection,
+        buyerTokenAccount
+      );
+      const availableToken =
+        parseInt(projectTokenAccountInfo.amount.toString()) / 10 ** 6;
+      setPurchasedSolToken(availableToken);
+    } catch (error) {
+      setPurchasedSolToken(0);
+      console.log(buyerTokenAccount);
+    }
+  };
+
+  useEffect(() => {
+    getTokenAVilable();
+  }, [umi.identity.publicKey]);
 
   useEffect(() => {
     getInfo();
@@ -75,10 +120,8 @@ const MainSection = () => {
           ? await contract.methods.tokenAmountsNative(weiAmount).call()
           : await contract.methods.tokenAmountsUSDT(weiAmount).call();
 
-      if (tokens && typeof tokens === 'string') {
-        const tokenInEther = parseFloat(
-          web3.utils.fromWei(tokens, "ether")
-        );
+      if (tokens && typeof tokens === "string") {
+        const tokenInEther = parseFloat(web3.utils.fromWei(tokens, "ether"));
         setTokenAmount(tokenInEther);
       }
       if (tabs.toUpperCase() === "SOL") {
@@ -116,14 +159,12 @@ const MainSection = () => {
 
   const handleSolBuyNow = async (solAmount: number) => {
     if (umi.identity.publicKey === dummyPublicKey) {
-      console.log("wallet not connected")
-      return
+      console.log("wallet not connected");
+      return;
     }
-    const balance = await umi.rpc.getBalance(umi.identity.publicKey)
-    const balanceAmount = Number(balance.basisPoints) / 10 ** 9
-    if (balanceAmount <= amount) {
-      console.log("Not Have Enough Sol")
-      return
+    if (solBalance <= amount) {
+      console.log("Not Have Enough Sol");
+      return;
     }
 
     // tx thing goes here
@@ -131,7 +172,7 @@ const MainSection = () => {
       buyer: umi.identity.publicKey,
       amount: amount,
       perUsdToken: 10,
-      SOlPrice: 140
+      SOlPrice: 140,
     });
 
     try {
@@ -164,7 +205,7 @@ const MainSection = () => {
       console.log("Transaction Failed");
     }
     // const availableBalance = await getBalance(umi)
-  }
+  };
 
   const handleApprove = async () => {
     try {
@@ -381,11 +422,13 @@ const MainSection = () => {
               </div>
               <div className="mt-8 grid lg:grid-cols-12 gap-x-2 gap-y-2 my-2">
                 <button
-                  className={`col-span-4 flex py-2 items-center justify-center gap-x-1 border border-primary text-sm font-medium uppercase tracking-widest ${tabs === "sol" && "bg-primary"
+                  className={`col-span-4 flex py-2 items-center justify-center gap-x-1 border border-primary text-sm font-medium uppercase tracking-widest ${tabs === "SOL" && "bg-primary"
                     }`}
                   type="button"
                   data-ninja-font="ubuntu_medium_normal"
-                  onClick={() => setTabs("sol")}
+                  onClick={() => {
+                    setTabs("SOL");
+                  }}
                 >
                   <img
                     alt="Solana"
@@ -451,7 +494,16 @@ const MainSection = () => {
                   <div className="w-full py-3 text-center cursor-pointer">
                     <h4 className="mb-2 text-base">
                       <WalletMultiButton />
-                      <button onClick={() => handleSolBuyNow(0.2)} style={{ background: "green", padding: "1em", border: "2px solid black" }}>Buy Now</button>
+                      <button
+                        onClick={() => handleSolBuyNow(0.2)}
+                        style={{
+                          background: "green",
+                          padding: "1em",
+                          border: "2px solid black",
+                        }}
+                      >
+                        Buy Now
+                      </button>
                       Only send SOL from hot wallets (eg Phantom) to this
                       address:
                     </h4>
@@ -550,7 +602,7 @@ const MainSection = () => {
                         className="block pb-2 text-xs font-bold tracking-wider"
                         data-ninja-font="ubuntu_medium_normal"
                       >
-                        Buy with {tabs}
+                        Buy with {tabs.toUpperCase()}
                       </label>
                       <input
                         id="pay-input"
@@ -585,13 +637,25 @@ const MainSection = () => {
                         data-ninja-font="ubuntu_medium_normal"
                       >
                         Tokens bought on{" "}
-                        {selectedChain === "ETH" ? "Ethereum" : "Binance"}:
+                        {tabs === "SOL"
+                          ? "SOLANA"
+                          : selectedChain === "ETH"
+                            ? "Ethereum"
+                            : selectedChain === "BNB"
+                              ? "Binance"
+                              : ""}
+                        :
                       </span>
                       <span
                         className="font-semibold"
                         data-ninja-font="ubuntu_medium_normal"
+                        onClick={() => console.log(purchasedSolToken)}
                       >
-                        {balance}
+                        {tabs === "SOL" ? (
+                          <> {purchasedSolToken}</>
+                        ) : (
+                          <>{balance}</>
+                        )}
                       </span>
                     </div>
                   </div>
