@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@100..900&display=swap");
+
+* {
+  margin: 0%;
+  padding: 0%;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Lexend Exa", sans-serif;
+  scroll-behavior: smooth;
+}
+
+.logo {
+  height: 4rem !important;
+}
+
+.strick {
+  color: transparent;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: white;
+}
+
+@media (max-width: 1024px) {
+  .menu_items {
+    position: fixed;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    background-color: #1f2937;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+    transition: 0.5s ease all;
+    gap: 2rem;
+  }
+
+  .menu_items div {
+    width: 70%;
+  }
+
+  .menu_items.active {
+    top: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .menu_items div {
+    width: 90%;
+    gap: 1.5rem;
+  }
+}
