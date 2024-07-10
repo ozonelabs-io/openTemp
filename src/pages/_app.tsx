@@ -12,7 +12,7 @@ import WalletContextProvider from "@/utils/walletProvider";
 import { bsc, mainnet } from "viem/chains";
 import { publicKey } from "@metaplex-foundation/umi";
 import { DataProvider, useData } from "@/utils/context";
-
+import "@/styles/globals.css"
 require("@solana/wallet-adapter-react-ui/styles.css");
 
 interface AppContentProps {
@@ -20,7 +20,7 @@ interface AppContentProps {
   pageProps: any;
 }
 
-const WalletMultiButton = dynamic(
+export const WalletMultiButton = dynamic(
   async () =>
     (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
   { ssr: false }

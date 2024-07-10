@@ -9,6 +9,7 @@ import Erc20Abi from "../utils/erc20abi.json";
 import Erc20AbiEth from "../utils/erc20eth.json";
 import Web3 from "web3";
 import { useData } from "@/utils/context";
+import { WalletMultiButton } from "@/pages/_app";
 
 const MainSection = () => {
   const [tab, setTab] = useState(0);
@@ -67,7 +68,6 @@ const MainSection = () => {
         type === "ETH"
           ? await contract.methods.tokenAmountsNative(weiAmount).call()
           : await contract.methods.tokenAmountsUSDT(weiAmount).call();
-      console.log("TOKEN AMOUNTS", tokens);
       const tokenInEther = parseFloat(
         web3.utils.fromWei(tokens, "ether")
       );
@@ -386,6 +386,7 @@ const MainSection = () => {
                 <>
                   <div className="w-full py-3 text-center cursor-pointer">
                     <h4 className="mb-2 text-base">
+                      <WalletMultiButton />
                       Only send SOL from hot wallets (eg Phantom) to this
                       address:
                     </h4>
